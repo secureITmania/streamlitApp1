@@ -1,6 +1,7 @@
 import streamlit as st
 import boto3
 import urllib3
+import requests
 import pandas as pd
 from botocore.exceptions import NoCredentialsError
 
@@ -91,11 +92,13 @@ def readableBucketPolicy(bucketname):
         listObj.append(rber)
         
 def arbitraryFileUpload(bucketname):
+    url = "https://raw.githubusercontent.com/secureITmania/streamlitApp1/master/streamlit_bas3/static/poc.png"
+    r = requests.get(url, stream=True)
     s3_client = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
                              aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                              region_name=AWS_REGION)
     try:
-        response = s3_client.upload_file('./static/poc.png', bucketname, 'poc.png')
+        response = s3_client.upload_fileobj(r.raw, bucketname, 'poc.png')
         afu = {
             "arbitraryFileUpload": True,
             "result": "File uploaded successfully"
