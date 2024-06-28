@@ -216,7 +216,7 @@ def arbitraryFileUpload(bucketname):
         
 def display_results():
     if listObj:
-        st.write("Security Assessment Results:")
+        st.write("Security Assessment Results: "+bucket)
         for result in listObj:
             df = pd.DataFrame([result])
             st.table(df)
